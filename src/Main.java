@@ -7,10 +7,8 @@ public class Main {
     boolean exit = false;
 
     while (!exit) {
-      // Print menu and get user choice
       int choice = system.printMenuAndGetChoice(scanner);
 
-      // Handle user choice
       switch (choice) {
         case 1:
           system.addProductFromUserInput();

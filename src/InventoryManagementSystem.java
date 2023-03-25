@@ -13,7 +13,7 @@ public class InventoryManagementSystem {
         this.scanner = new Scanner(System.in);
     }
 
-    // menu
+    // MENU
     public int printMenuAndGetChoice(Scanner scanner) {
         System.out.println("Bem vindo ao Sistema de Gerenciamento de Inventario");
         System.out.println("Selecione uma opcao:");
@@ -25,14 +25,14 @@ public class InventoryManagementSystem {
         System.out.println("6. Procurar produtos por categoria");
         System.out.println("7. Procurar produtos por preco");
         System.out.println("8. Sair");
-        System.out.print("Digita o numero da opcao: ");
+        System.out.print("Digite o numero da opcao: ");
         int choice = scanner.nextInt();
-        scanner.nextLine(); // consume the newline character
+        scanner.nextLine();
         return choice;
     }
     
 
-    // Add a product to stock with an option to mark it as on sale with a 10% discount
+    // CREATE
     public void addProductFromUserInput() {
         try {
             System.out.println("Adicionando novo produto ao estoque:");
@@ -40,12 +40,12 @@ public class InventoryManagementSystem {
             String name = scanner.nextLine();
             System.out.print("Preco (Ex: 999): ");
             double price = scanner.nextDouble();
-            scanner.nextLine(); // consume the newline character
+            scanner.nextLine();
             System.out.print("Categoria (Eletronicos, Alimentos, Vestuario): ");
             String category = scanner.nextLine();
             System.out.print("Promocao? (true/false): ");
             boolean isOnSale = scanner.nextBoolean();
-            scanner.nextLine(); // consume the newline character
+            scanner.nextLine();
             String brand = "";
             int voltage = 0;
             String size = "";
@@ -57,7 +57,7 @@ public class InventoryManagementSystem {
                 brand = scanner.nextLine();
                 System.out.print("Voltagem (Ex: 220): ");
                 voltage = scanner.nextInt();
-                scanner.nextLine(); // consume the newline character
+                scanner.nextLine();
             } else if (category.equalsIgnoreCase("Vestuario")) {
                 System.out.print("Tamanho (Ex: GG): ");
                 size = scanner.nextLine();
@@ -68,7 +68,7 @@ public class InventoryManagementSystem {
                 type = scanner.nextLine();
                 System.out.print("Organico? (true/false): ");
                 isNatural = scanner.nextBoolean();
-                scanner.nextLine(); // consume the newline character
+                scanner.nextLine();
             } else {
                 throw new IllegalArgumentException("Categoria" + category + "invalida.");
             }
@@ -93,100 +93,102 @@ public class InventoryManagementSystem {
         }
     }
 
-    // Update a product in stock
+    // UPDATE
     public void updateProductFromUserInput() {
         String tempName = "";
         try {
-        System.out.println("Atualizar produto em estoque:");
-        System.out.print("Nome do produto a ser atualizado: ");
-        String name = scanner.nextLine();
-        tempName = name;
-        Product productToUpdate = getProductByName(name);
-        if (productToUpdate == null) {
-            System.out.println("Produto" + name + "nao encontrado.");
-            return;
-        }
-        System.out.println("Informacoes atuais do produto:");
-        System.out.println(productToUpdate.toString());
-        System.out.println("Digite novas informacoes (Enter para manter o valor atual):");
-        System.out.print("Nome [" + productToUpdate.getName() + "]: ");
-        String newName = scanner.nextLine();
-        if (!newName.isEmpty()) {
-            productToUpdate.setName(newName);
-        }
-        System.out.print("Preco [" + productToUpdate.getPrice() + "]: ");
-        String newPriceString = scanner.nextLine();
-        if (!newPriceString.isEmpty()) {
-            double newPrice = Double.parseDouble(newPriceString);
-            productToUpdate.setPrice(newPrice);
-        }
-        // tentar mudar o produto de categoria quebra tudo. Esquece isso!
-        // System.out.print("Enter product category [" + productToUpdate.getCategory() + "]: ");
-        // String newCategory = scanner.nextLine();
-        // if (!newCategory.isEmpty()) {
-        //     productToUpdate.setCategory(newCategory);
-        // }
-        System.out.print("Promocao? [" + productToUpdate.isOnSale() + "]: ");
-        String newOnSaleString = scanner.nextLine();
-        if (!newOnSaleString.isEmpty()) {
-            boolean newOnSale = Boolean.parseBoolean(newOnSaleString);
-            productToUpdate.setOnSale(newOnSale);
-            if (newOnSale) {
-                productToUpdate.setPrice(productToUpdate.getPrice() * 0.9);
+            System.out.println("Atualizar produto em estoque:");
+            System.out.print("Nome do produto a ser atualizado: ");
+            String name = scanner.nextLine();
+            tempName = name;
+            Product productToUpdate = getExactProductByName(name);
+            if (productToUpdate == null) {
+                System.out.println("Produto" + name + "nao encontrado.");
+                return;
             }
-        }
-        if (productToUpdate instanceof Electronics) {
-            Electronics electronics = (Electronics) productToUpdate;
-            System.out.print("Fabricante [" + electronics.getBrand() + "]: ");
-            String newBrand = scanner.nextLine();
-            if (!newBrand.isEmpty()) {
-                electronics.setBrand(newBrand);
+            System.out.println("Informacoes atuais do produto:");
+            System.out.println(productToUpdate.toString());
+            System.out.println("Digite novas informacoes (Enter para manter o valor atual):");
+            System.out.print("Nome [" + productToUpdate.getName() + "]: ");
+            String newName = scanner.nextLine();
+            if (!newName.isEmpty()) {
+                productToUpdate.setName(newName);
             }
-            System.out.print("Voltagem [" + electronics.getVoltage() + "]: ");
-            String newVoltageString = scanner.nextLine();
-            if (!newVoltageString.isEmpty()) {
-                int newVoltage = Integer.parseInt(newVoltageString);
-                electronics.setVoltage(newVoltage);
+            System.out.print("Preco [" + productToUpdate.getPrice() + "]: ");
+            String newPriceString = scanner.nextLine();
+            if (!newPriceString.isEmpty()) {
+                double newPrice = Double.parseDouble(newPriceString);
+                productToUpdate.setPrice(newPrice);
             }
-        } else if (productToUpdate instanceof Clothing) {
-            Clothing clothing = (Clothing) productToUpdate;
-            System.out.print("Tamanho [" + clothing.getSize() + "]: ");
-            String newSize = scanner.nextLine();
-            if (!newSize.isEmpty()) {
-                clothing.setSize(newSize);
+
+            // TENTAR MUDAR A CATEGORIA DO PRODUTO QUEBRA TUDO! ESQUECE DISSO!!!
+            // System.out.print("Enter product category [" + productToUpdate.getCategory() + "]: ");
+            // String newCategory = scanner.nextLine();
+            // if (!newCategory.isEmpty()) {
+            //     productToUpdate.setCategory(newCategory);
+            // }
+
+            System.out.print("Promocao? [" + productToUpdate.isOnSale() + "]: ");
+            String newOnSaleString = scanner.nextLine();
+            if (!newOnSaleString.isEmpty()) {
+                boolean newOnSale = Boolean.parseBoolean(newOnSaleString);
+                productToUpdate.setOnSale(newOnSale);
+                if (newOnSale) {
+                    productToUpdate.setPrice(productToUpdate.getPrice() * 0.9);
+                }
             }
-            System.out.print("Material [" + clothing.getMaterial() + "]: ");
-            String newMaterial = scanner.nextLine();
-            if (!newMaterial.isEmpty()) {
-                clothing.setMaterial(newMaterial);
+            if (productToUpdate instanceof Electronics) {
+                Electronics electronics = (Electronics) productToUpdate;
+                System.out.print("Fabricante [" + electronics.getBrand() + "]: ");
+                String newBrand = scanner.nextLine();
+                if (!newBrand.isEmpty()) {
+                    electronics.setBrand(newBrand);
+                }
+                System.out.print("Voltagem [" + electronics.getVoltage() + "]: ");
+                String newVoltageString = scanner.nextLine();
+                if (!newVoltageString.isEmpty()) {
+                    int newVoltage = Integer.parseInt(newVoltageString);
+                    electronics.setVoltage(newVoltage);
+                }
+            } else if (productToUpdate instanceof Clothing) {
+                Clothing clothing = (Clothing) productToUpdate;
+                System.out.print("Tamanho [" + clothing.getSize() + "]: ");
+                String newSize = scanner.nextLine();
+                if (!newSize.isEmpty()) {
+                    clothing.setSize(newSize);
+                }
+                System.out.print("Material [" + clothing.getMaterial() + "]: ");
+                String newMaterial = scanner.nextLine();
+                if (!newMaterial.isEmpty()) {
+                    clothing.setMaterial(newMaterial);
+                }
+            } else if (productToUpdate instanceof Food) {
+                Food food = (Food) productToUpdate;
+                System.out.print("Tipo [" + food.getType() + "]: ");
+                String newType = scanner.nextLine();
+                if (!newType.isEmpty()) {
+                    food.setType(newType);
+                }
+                System.out.print("Organico? [" + food.isNatural() + "]: ");
+                String newIsNaturalString = scanner.nextLine();
+                if (!newIsNaturalString.isEmpty()) {
+                    boolean newIsNatural = Boolean.parseBoolean(newIsNaturalString);
+                    food.setNatural(newIsNatural);
+                }
             }
-        } else if (productToUpdate instanceof Food) {
-            Food food = (Food) productToUpdate;
-            System.out.print("Tipo [" + food.getType() + "]: ");
-            String newType = scanner.nextLine();
-            if (!newType.isEmpty()) {
-                food.setType(newType);
-            }
-            System.out.print("Organico? [" + food.isNatural() + "]: ");
-            String newIsNaturalString = scanner.nextLine();
-            if (!newIsNaturalString.isEmpty()) {
-                boolean newIsNatural = Boolean.parseBoolean(newIsNaturalString);
-                food.setNatural(newIsNatural);
-            }
-        }
-    } catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
         System.out.println("Input invalido. Digite um numero");
     } catch (NullPointerException e) {
         System.out.println("Produto" + tempName +  "nao encontrado");
     }
 }
 
-    // Remove a product from stock
+    // DELETE
     public void removeProductFromUserInput() {
         System.out.println("Remover produto do estoque:");
         System.out.print("Nome do produto a ser removido: ");
         String name = scanner.nextLine();
-        Product productToRemove = getProductByName(name);
+        Product productToRemove = getExactProductByName(name);
         if (productToRemove == null) {
             System.out.println("Produto" + name + "nao encontrado.");
             return;
@@ -195,7 +197,7 @@ public class InventoryManagementSystem {
         System.out.println("Produto" + name + "removido do estoque.");
     }
 
-    // List all products in stock
+    // LISTAR TODOS OS PRODUTOS
     public void listProducts() {
         System.out.println("Lista de produtos em estoque:");
         for (Product product : products) {
@@ -203,12 +205,12 @@ public class InventoryManagementSystem {
         }
     }
 
-    // Search for a product by name
+    // LISTAR POR NOME
     public void searchByNameFromUserInput() {
         System.out.println("Procurando produto por nome:");
         System.out.print("Nome do produto a procurar: ");
         String name = scanner.nextLine();
-        List<Product> matchingProducts = getProductsByName(name);
+        List<Product> matchingProducts = getAllProductsContaining(name);
         if (matchingProducts.isEmpty()) {
             System.out.println("Produto" + name + "nao encontrado");
             return;
@@ -219,7 +221,7 @@ public class InventoryManagementSystem {
         }
     }
 
-    // Search for products by category
+    // LISTAR POR CATEGORIA
     public void searchByCategoryFromUserInput() {
         System.out.println("Procurando produto por categoria:");
         System.out.print("Nome da categoria a procurar (Eletronicos, Vestuario, Alimentos): ");
@@ -239,6 +241,7 @@ public class InventoryManagementSystem {
         }
     }
 
+    // LISTAR POR PREÇO
     public void searchByPriceFromUserInput() {
         double minPrice = 0;
         double maxPrice = 0;
@@ -247,10 +250,10 @@ public class InventoryManagementSystem {
             try {
                 System.out.print("Preco minimo: ");
                 minPrice = scanner.nextDouble();
-                scanner.nextLine(); // consume the newline character
+                scanner.nextLine();
                 System.out.print("Preco maximo: ");
                 maxPrice = scanner.nextDouble();
-                scanner.nextLine(); // consume the newline character
+                scanner.nextLine();
                 validInput = true;
             } catch (InputMismatchException e) {
                 System.out.println("Input invalido. Digite um preco valido (Ex: 900)");
@@ -279,7 +282,7 @@ public class InventoryManagementSystem {
         return productsInRange;
     }
 
-    // Check if the given category is valid
+    // CHECA SE A CATEGORIA É VALIDA
     private boolean isValidCategory(String category) {
         switch (category) {
             case "eletronicos":
@@ -291,7 +294,7 @@ public class InventoryManagementSystem {
         }
     }
 
-    // Get all products of the given category
+    // PEGA TODOS OS PRODUTOS DE UMA CATEGORIA
     private List<Product> getProductsByCategory(String category) {
         List<Product> matchingProducts = new ArrayList<>();
         for (Product product : products) {
@@ -302,8 +305,8 @@ public class InventoryManagementSystem {
         return matchingProducts;
     }
 
-    // Get all products with the given name
-    private List<Product> getProductsByName(String name) {
+    // PEGA TODOS OS PRODUTOS COM UM NOME
+    private List<Product> getAllProductsContaining(String name) {
         List<Product> matchingProducts = new ArrayList<>();
         for (Product product : products) {
             if (product.getName().contains(name)) {
@@ -313,8 +316,8 @@ public class InventoryManagementSystem {
         return matchingProducts;
     }
 
-    // Get the first product with the given name
-    private Product getProductByName(String name) {
+    // PEGA O PRIMEIRO PRODUTO COM O NOME
+    private Product getExactProductByName(String name) {
         for (Product product : products) {
             if (product.getName().equalsIgnoreCase(name)) {
                 return product;
