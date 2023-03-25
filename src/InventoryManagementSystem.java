@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.InputMismatchException;
+import utils.SoutUtils;
+import utils.CategoryUtils;
 
 
 public class InventoryManagementSystem {
@@ -12,6 +14,11 @@ public class InventoryManagementSystem {
         this.products = new ArrayList<>();
         this.scanner = new Scanner(System.in);
     }
+
+    String red = SoutUtils.colorRed;
+    String green = SoutUtils.colorGreen;
+    String white = SoutUtils.resetColor;
+
 
     // MENU
     public int printMenuAndGetChoice(Scanner scanner) {
@@ -70,7 +77,7 @@ public class InventoryManagementSystem {
                 isNatural = scanner.nextBoolean();
                 scanner.nextLine();
             } else {
-                throw new IllegalArgumentException("Categoria" + category + "invalida.");
+                throw new IllegalArgumentException(red + "Categoria " + category + " invalida." + white);
             }
             Product product;
             if (category.equalsIgnoreCase("Eletronicos")) {
@@ -85,9 +92,9 @@ public class InventoryManagementSystem {
                 product.setOnSale(true);
             }
             products.add(product);
-            System.out.println("Produto " + name +  " adicionado ao estoque.");
+            System.out.println(green + "Produto " + name +  " adicionado ao estoque." + white);
         } catch (InputMismatchException e) {
-            System.out.println("Input invalido.");
+            System.out.println(red + "Input invalido." + white);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -103,7 +110,7 @@ public class InventoryManagementSystem {
             tempName = name;
             Product productToUpdate = getExactProductByName(name);
             if (productToUpdate == null) {
-                System.out.println("Produto " + name + " nao encontrado.");
+                System.out.println(red + "Produto " + name + " nao encontrado." + white);
                 return;
             }
             System.out.println("Informacoes atuais do produto:");
@@ -177,9 +184,9 @@ public class InventoryManagementSystem {
                 }
             }
         } catch (NumberFormatException e) {
-        System.out.println("Input invalido. Digite um numero");
+        System.out.println(red + "Input invalido. Digite um numero" + white);
     } catch (NullPointerException e) {
-        System.out.println("Produto " + tempName +  " nao encontrado");
+        System.out.println(red + "Produto " + tempName +  " nao encontrado" + white);
     }
 }
 
@@ -190,16 +197,16 @@ public class InventoryManagementSystem {
         String name = scanner.nextLine();
         Product productToRemove = getExactProductByName(name);
         if (productToRemove == null) {
-            System.out.println("Produto " + name + " nao encontrado.");
+            System.out.println(red + "Produto " + name + " nao encontrado." + white);
             return;
         }
         products.remove(productToRemove);
-        System.out.println("Produto " + name + " removido do estoque.");
+        System.out.println(green + "Produto " + name + " removido do estoque." + white);
     }
 
     // LISTAR TODOS OS PRODUTOS
     public void listProducts() {
-        System.out.println("Lista de produtos em estoque:");
+        System.out.println(green + "Lista de produtos em estoque:");
         for (Product product : products) {
             System.out.println(product.toString());
         }
@@ -212,10 +219,10 @@ public class InventoryManagementSystem {
         String name = scanner.nextLine();
         List<Product> matchingProducts = getAllProductsContaining(name);
         if (matchingProducts.isEmpty()) {
-            System.out.println("Produto " + name + " nao encontrado");
+            System.out.println(red + "Produto " + name + " nao encontrado" + white);
             return;
         }
-        System.out.println("Produto encontrado:");
+        System.out.println(green + "Produto encontrado:" + white);
         for (Product product : matchingProducts) {
             System.out.println(product.toString());
         }
@@ -226,16 +233,16 @@ public class InventoryManagementSystem {
         System.out.println("Procurando produto por categoria:");
         System.out.print("Nome da categoria a procurar (Eletronicos, Vestuario, Alimentos): ");
         String category = scanner.nextLine();
-        if (!isValidCategory(category)) {
-            System.out.println("Categoria " + category + " invalida");
+        if (!CategoryUtils.isValidCategory(category)) {
+            System.out.println(red + "Categoria " + category + " invalida" + white);
             return;
         }
         List<Product> matchingProducts = getProductsByCategory(category);
         if (matchingProducts.isEmpty()) {
-            System.out.println("Nenhum produto encontrado");
+            System.out.println(red + "Nenhum produto encontrado" + white);
             return;
         }
-        System.out.println("Produtos encontrados em " + category);
+        System.out.println(green + "Produtos encontrados em " + category + white);
         for (Product product : matchingProducts) {
             System.out.println(product.toString());
         }
@@ -256,41 +263,18 @@ public class InventoryManagementSystem {
                 scanner.nextLine();
                 validInput = true;
             } catch (InputMismatchException e) {
-                System.out.println("Input invalido. Digite um preco valido (Ex: 900)");
+                System.out.println(red + "Input invalido. Digite um preco valido (Ex: 900)" + white);
                 scanner.nextLine(); // clear the scanner
             }
         }
         List<Product> productsInRange = getProductsByPriceRange(minPrice, maxPrice);
         if (productsInRange.isEmpty()) {
-            System.out.println("Nenhum produto encontrado nessa faixa de preco" + "(" + minPrice + " - " + maxPrice + ")");
+            System.out.println(red + "Nenhum produto encontrado nessa faixa de preco" + "(" + minPrice + " - " + maxPrice + ")" + white);
         } else {
-            System.out.println("Produtos encontrados nessa faixa de preco" + "(" + minPrice + " - " + maxPrice + ")");
+            System.out.println(green + "Produtos encontrados nessa faixa de preco" + "(" + minPrice + " - " + maxPrice + ")" + white);
             for (Product product : productsInRange) {
                 System.out.println(product.toString());
             }
-        }
-    }
-    
-
-    private List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
-        List<Product> productsInRange = new ArrayList<>();
-        for (Product product : products) {
-            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
-                productsInRange.add(product);
-            }
-        }
-        return productsInRange;
-    }
-
-    // CHECA SE A CATEGORIA É VALIDA
-    private boolean isValidCategory(String category) {
-        switch (category) {
-            case "eletronicos":
-            case "vestuario":
-            case "alimentos":
-                return true;
-            default:
-                return false;
         }
     }
 
@@ -326,7 +310,16 @@ public class InventoryManagementSystem {
         return null;
     }
 
-
+    // PEGA PRODUTOS NUMA FAIXA DE PREÇO
+    private List<Product> getProductsByPriceRange(double minPrice, double maxPrice) {
+        List<Product> productsInRange = new ArrayList<>();
+        for (Product product : products) {
+            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
+                productsInRange.add(product);
+            }
+        }
+        return productsInRange;
+    }
 }
 
 
