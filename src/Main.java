@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -7,37 +8,42 @@ public class Main {
     boolean exit = false;
 
     while (!exit) {
-      int choice = system.printMenuAndGetChoice(scanner);
+      try {
+        int choice = system.printMenuAndGetChoice(scanner);
 
-      switch (choice) {
-        case 1:
-          system.addProductFromUserInput();
-          break;
-        case 2:
-          system.updateProductFromUserInput();
-          break;
-        case 3:
-          system.removeProductFromUserInput();
-          break;
-        case 4:
-          system.listProducts();
-          break;
-        case 5:
-          system.searchByNameFromUserInput();
-          break;
-        case 6:
-          system.searchByCategoryFromUserInput();
-          break;
-        case 7:
-          system.searchByPriceFromUserInput();
-          break;
-        case 8:
-          System.out.println("Encerrando...");
-          exit = true;
-          break;
-        default:
-          System.out.println("Opcao invalida. Tente novamente.");
-          break;
+        switch (choice) {
+          case 1:
+            system.addProductFromUserInput();
+            break;
+          case 2:
+            system.updateProductFromUserInput();
+            break;
+          case 3:
+            system.removeProductFromUserInput();
+            break;
+          case 4:
+            system.listProducts();
+            break;
+          case 5:
+            system.searchByNameFromUserInput();
+            break;
+          case 6:
+            system.searchByCategoryFromUserInput();
+            break;
+          case 7:
+            system.searchByPriceFromUserInput();
+            break;
+          case 8:
+            System.out.println("Encerrando...");
+            exit = true;
+            break;
+          default:
+            System.out.println("Opcao invalida. Tente novamente.");
+            break;
+        }
+      } catch (InputMismatchException e) {
+        scanner.next();
+        System.out.println("Opcao invalida. Tente novamente.");
       }
     }
 
