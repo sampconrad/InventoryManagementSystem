@@ -206,7 +206,7 @@ public class InventoryManagementSystem {
 
     // LISTAR TODOS OS PRODUTOS
     public void listProducts() {
-        System.out.println(green + "Lista de produtos em estoque:");
+        System.out.println(green + "Lista de produtos em estoque:" + white);
         for (Product product : products) {
             System.out.println(product.toString());
         }
