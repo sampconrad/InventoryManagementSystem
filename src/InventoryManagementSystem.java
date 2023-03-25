@@ -85,7 +85,7 @@ public class InventoryManagementSystem {
                 product.setOnSale(true);
             }
             products.add(product);
-            System.out.println("Produto" + name +  "adicionado ao estoque.");
+            System.out.println("Produto " + name +  " adicionado ao estoque.");
         } catch (InputMismatchException e) {
             System.out.println("Input invalido.");
         } catch (IllegalArgumentException e) {
@@ -103,7 +103,7 @@ public class InventoryManagementSystem {
             tempName = name;
             Product productToUpdate = getExactProductByName(name);
             if (productToUpdate == null) {
-                System.out.println("Produto" + name + "nao encontrado.");
+                System.out.println("Produto " + name + " nao encontrado.");
                 return;
             }
             System.out.println("Informacoes atuais do produto:");
@@ -179,7 +179,7 @@ public class InventoryManagementSystem {
         } catch (NumberFormatException e) {
         System.out.println("Input invalido. Digite um numero");
     } catch (NullPointerException e) {
-        System.out.println("Produto" + tempName +  "nao encontrado");
+        System.out.println("Produto " + tempName +  " nao encontrado");
     }
 }
 
@@ -190,11 +190,11 @@ public class InventoryManagementSystem {
         String name = scanner.nextLine();
         Product productToRemove = getExactProductByName(name);
         if (productToRemove == null) {
-            System.out.println("Produto" + name + "nao encontrado.");
+            System.out.println("Produto " + name + " nao encontrado.");
             return;
         }
         products.remove(productToRemove);
-        System.out.println("Produto" + name + "removido do estoque.");
+        System.out.println("Produto " + name + " removido do estoque.");
     }
 
     // LISTAR TODOS OS PRODUTOS
@@ -212,7 +212,7 @@ public class InventoryManagementSystem {
         String name = scanner.nextLine();
         List<Product> matchingProducts = getAllProductsContaining(name);
         if (matchingProducts.isEmpty()) {
-            System.out.println("Produto" + name + "nao encontrado");
+            System.out.println("Produto " + name + " nao encontrado");
             return;
         }
         System.out.println("Produto encontrado:");
@@ -227,7 +227,7 @@ public class InventoryManagementSystem {
         System.out.print("Nome da categoria a procurar (Eletronicos, Vestuario, Alimentos): ");
         String category = scanner.nextLine();
         if (!isValidCategory(category)) {
-            System.out.println("Categoria" + category + "invalida");
+            System.out.println("Categoria " + category + " invalida");
             return;
         }
         List<Product> matchingProducts = getProductsByCategory(category);
@@ -235,7 +235,7 @@ public class InventoryManagementSystem {
             System.out.println("Nenhum produto encontrado");
             return;
         }
-        System.out.println("Produtos encontrados em" + category);
+        System.out.println("Produtos encontrados em " + category);
         for (Product product : matchingProducts) {
             System.out.println(product.toString());
         }
